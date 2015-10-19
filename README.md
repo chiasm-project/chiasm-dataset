@@ -15,13 +15,17 @@ The purpose of this data structure is to serve as a common data table representa
 
 Note: development has not yet started, following the practice of [README-driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html).
 
-`var dataset = new Dataset(data, metadata);`
+```javascript
+var dataset = new Dataset(data, metadata);
+```
 
 At the time of construction, the data structure is validated according to the constraints detailed below. An exception is thrown if the given `data` and `metadata` values violate any constraints.
 
 When writing functions that accept an object that is supposedly a Dataset, you can use `instanceof` to check if it is in fact a Dataset, like this:
 
-`if(dataset instanceof Dataset){ ... }`
+```javascript
+if(dataset instanceof Dataset){ ... }
+```
 
 # Data Structure Reference
 
@@ -31,7 +35,7 @@ Each `dataset` object has two properties, [`data`](#data) and [`metadata`](#meta
 
 An array of row objects. This contains all rows of the data table. This is the same data structure returned by [d3-dsv](https://github.com/d3/d3-dsv) after parsing strings into primitive types. Each row object has keys corresponding to column names and values for each cell of the data table. The values are represented in memory as the JavaScript primitive types corresponding the the [declared column type](#type).
 
-<a name="data" href="#data">#</a><i>dataset</i>.<b>metadata</b>
+<a name="metadata" href="#metadata">#</a><i>dataset</i>.<b>metadata</b>
 
 An object that describes the data table. This includes the properties [isCube](#isCube) and [columns](#columns).
 
