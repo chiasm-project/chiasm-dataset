@@ -47,29 +47,29 @@ When set to `true`, each row contains values for dimensions and measures. In thi
 
 <a name="columns" href="#columns">#</a><i>dataset.metadata</i>.<b>columns</b>
 
-An array of column descriptor objects. Each of these objects must have the properties [name](#columnName), [label](#columnLabel) and [type](#type). The order of these objects may be used in visualizations (e.g. to define the order of axes in parallel coordinates, or the order of columns in an Excel-like table representation).
+An array of column descriptor objects. Each of these objects must have the properties [name](#name), [label](#label) and [type](#type). The order of these objects may be used in visualizations (e.g. to define the order of axes in parallel coordinates, or the order of columns in an Excel-like table representation).
 
 If [isCube](#isCube) is `true`, then each of these objects may have the properties [isDimension](#isDimension) and [interval](#interval).
 
-<a name="columnName" href="#columnName">#</a><i>dataset.metadata.columns[i]</i>.<b>name</b>
+<a name="name" href="#name">#</a><i>dataset.metadata.columns[i]</i>.<b>name</b>
 
 The name of the column. This corresponds to the keys in each row object of [dataset.data](#data).
 
-<a label="columnLabel" href="#columnLabel">#</a><i>dataset.metadata.columns[i]</i>.<b>label</b>
+<a name="label" href="#label">#</a><i>dataset.metadata.columns[i]</i>.<b>label</b>
 
 The label of the column. This is a human-readable string that may be used in user interface elements that represent the column such as column selection widgets or axis labels in visualizations.
 
-<a type="type" href="#type">#</a><i>dataset.metadata.columns[i]</i>.<b>type</b>
+<a name="type" href="#type">#</a><i>dataset.metadata.columns[i]</i>.<b>type</b>
 
 The type of the column. This is a string, and must be either "number", "string", or "date".
 
-<a type="isDimension" href="#isDimension">#</a><i>dataset.metadata.columns[i]</i>.<b>isDimension</b>
+<a name="isDimension" href="#isDimension">#</a><i>dataset.metadata.columns[i]</i>.<b>isDimension</b>
 
 If this property is set to `true`, then this column represents a data cube dimension. This property is only relevant if [isCube](#isCube) is set to `true`.
 
 If the column represents a dimension and is of type "number" or "date", then it is assumed to represent the result of binned aggregation. In this case, the [interval](#interval) property must be defined.
 
-<a type="interval" href="#interval">#</a><i>dataset.metadata.columns[i]</i>.<b>interval</b>
+<a name="interval" href="#interval">#</a><i>dataset.metadata.columns[i]</i>.<b>interval</b>
 
 The interval between bins. This property is only relevant if:
 
@@ -81,7 +81,7 @@ If the column type is "number", then this property is expected to be a number. T
 
 If the column type is "date", then this property is expected to be a string corresponding to one of the interval types defined in [d3-time](https://github.com/d3/d3-time). This includes, for example, "minute", "hour", "day", "week", "month", and "year".
 
-<a type="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b>
+<a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b>
 
 The domain of this column. This corresponds to the notion of domain in D3 scales.
 
