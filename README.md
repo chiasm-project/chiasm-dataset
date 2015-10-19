@@ -25,11 +25,15 @@ When writing functions that accept an object that is supposedly a Dataset, you c
 
 # Data Structure Reference
 
-Each `dataset` object has two properties, `data` and `metadata`.
+Each `dataset` object has two properties, [`data`](#data) and [`metadata`](#metadata).
 
 <a name="data" href="#data">#</a><i>dataset</i>.<b>data</b>
 
 An array of row objects. This contains all rows of the data table. This is the same data structure returned by [d3-dsv](https://github.com/d3/d3-dsv) after parsing strings into primitive types. Each row object has keys corresponding to column names and values for each cell of the data table. The values are represented in memory as the JavaScript primitive types corresponding the the [declared column type](#type).
+
+<a name="data" href="#data">#</a><i>dataset</i>.<b>metadata</b>
+
+An object that describes the data table. This includes the properties [isCube](#isCube) and [columns](#columns).
 
 <a name="isCube" href="#isCube">#</a><i>dataset.metadata</i>.<b>isCube</b>
 
