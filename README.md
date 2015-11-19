@@ -99,3 +99,11 @@ This library is essentially a data frame for JavaScript, similar in many ways to
  * [Pandas Data Frames](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html)
 
 I hope I'm not reinventing the wheel here. If you know of any JavaScript data frame library that solves the same problems as this one, please open a GitHub issue.
+
+# Roadmap
+
+The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following components will be modified to use this data structure as input and/or output:
+
+ * [ ] [chiasm-dsv-dataset](https://github.com/chiasm-project/chiasm-dsv-dataset) Output
+ * [ ] [chiasm-crossfilter](https://github.com/chiasm-project/chiasm-crossfilter) Input and Output(s)
+ * [ ] [chiasm-data-reduction](https://github.com/chiasm-project/chiasm-data-reduction) Input and Output
