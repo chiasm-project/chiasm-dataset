@@ -1,0 +1,23 @@
+{
+  "name": "chiasm-dataset",
+  "version": "0.0.1",
+  "description": "A data structure for representing tabular data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chiasm-project/chiasm-dataset.git"
+  },
+  "keywords": [
+    "tabular",
+    "data"
+  ],
+  "author": "Curran Kelleher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chiasm-project/chiasm-dataset/issues"
+  },
+  "homepage": "https://github.com/chiasm-project/chiasm-dataset"
+}
