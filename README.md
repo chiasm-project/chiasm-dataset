@@ -17,7 +17,7 @@ Note: development has not yet started, following the practice of [README-driven 
 
 ```javascript
 var ChiasmDataset = require("chiasm-dataset");
-var dataset = new Dataset(data, metadata);
+var dataset = new ChiasmDataset(data, metadata);
 ```
 
 At the time of construction, the data structure is validated according to the constraints detailed below. An exception is thrown if the given `data` and `metadata` values violate any constraints.
