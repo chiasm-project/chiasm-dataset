@@ -108,6 +108,7 @@ The overall goal of this project is to serve as the core data structure exchange
  * [ ] [chiasm-dsv-dataset](https://github.com/chiasm-project/chiasm-dsv-dataset) Output
  * [ ] [chiasm-crossfilter](https://github.com/chiasm-project/chiasm-crossfilter) Input and Output(s)
  * [ ] [chiasm-data-reduction](https://github.com/chiasm-project/chiasm-data-reduction) Input and Output
+ * [ ] [chiasm-charts](https://github.com/chiasm-project/chiasm-charts) Input
 
 The constraints that must be validated upon construction include:
 
