@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/chiasm-project/chiasm-dataset/issues"
   },
-  "homepage": "https://github.com/chiasm-project/chiasm-dataset"
+  "homepage": "https://github.com/chiasm-project/chiasm-dataset",
+  "devDependencies": {
+    "chai": "^3.4.1"
+  }
 }
