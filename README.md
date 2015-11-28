@@ -110,33 +110,6 @@ The overall goal of this project is to serve as the core data structure exchange
  * [ ] [chiasm-data-reduction](https://github.com/chiasm-project/chiasm-data-reduction) Input and Output
  * [ ] [chiasm-charts](https://github.com/chiasm-project/chiasm-charts) Input
 
-The constraints that must be validated upon construction include:
+There [should be a function that validates the data structure](https://github.com/chiasm-project/chiasm-dataset/issues/1).
 
- * [ ] Each `dataset` object has two properties, [`data`](#data) and [`metadata`](#metadata).
- * [ ] `data` is an array of row objects.
- * [ ] Each row object has keys corresponding to column names and values represented as the JavaScript primitive types corresponding the the [declared column type](#type).
- * [ ] If <a name="isCube" href="#isCube">#</a><i>dataset.metadata</i>.<b>isCube</b> is true, each column is interpreted as either as a dimension or measure, depending on the value of the [isDimension](#isDimension) property.
- * [ ] <a name="columns" href="#columns">#</a><i>dataset.metadata</i>.<b>columns</b> is an array of column descriptor objects.
- * [ ] Each of these objects must have the properties [name](#name), [label](#label) and [type](#type). 
- * [ ] If [isCube](#isCube) is not `true`, then each of these column descriptor objects must not have the properties [isDimension](#isDimension) or [interval](#interval).
- * [ ] <a name="name" href="#name">#</a><i>dataset.metadata.columns[i]</i>.<b>name</b> corresponds to the keys in each row object of [dataset.data](#data).
- * [ ] <a name="label" href="#label">#</a><i>dataset.metadata.columns[i]</i>.<b>label</b> Should be defined. A validation warning should be raised if the label is missing.
- * [ ] <a name="type" href="#type">#</a><i>dataset.metadata.columns[i]</i>.<b>type</b> must be either "number", "string", or "date".
- * [ ] If <a name="isDimension" href="#isDimension">#</a><i>dataset.metadata.columns[i]</i>.<b>isDimension</b> is set to `true`, then [isCube](#isCube) must be set to `true`.
- * [ ] If <a name="isDimension" href="#isDimension">#</a><i>dataset.metadata.columns[i]</i>.<b>isDimension</b> is set to `true` and the column is of type "number" or "date", then [interval](#interval) must be defined.
- * [ ] If <a name="interval" href="#interval">#</a><i>dataset.metadata.columns[i]</i>.<b>interval</b> is defined, then
-   * the dataset is aggregated ([isCube](#isCube) == `true`) and
-   * the column is a dimension ([isDimension](#isDimension) is true), and
-   * the column [type](#type) is either "number" or "date".
- * [ ] If the column type is "number", then `interval` must be a number. 
- * [ ] If the column type is "date", then `interval` must be a string corresponding to one of the interval types defined in [d3-time](https://github.com/d3/d3-time). This includes, for example, "minute", "hour", "day", "week", "month", and "year".
- * [ ] If <a name="interval" href="#interval">#</a><i>dataset.metadata.columns[i]</i>.<b>interval</b> is defined, then data values should be spaced according to this interval (relative to any other data value from the column) when the column type is "number".
- * [ ] If <a name="interval" href="#interval">#</a><i>dataset.metadata.columns[i]</i>.<b>interval</b> is defined, then data values should be spaced according to this interval (relative to any other data value from the column) when the column type is "date".
- * [ ] If <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b> is defined and the column type is "string", then the domain must be an array of unique string values that occur in the column.
- * [ ] If <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b> is defined and the column type is "number", then the domain must be an array containing two numbers, the minimum (`domain[0]`) and the maximum (`domain[1]`).
- * [ ] If <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b> is defined and the column type is "number", then all values in the column must fall within the domain.
- * [ ] If <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b> is defined and the column type is "date", then the domain is an array containing two JavaScript `Date` objects, the minimum (`domain[0]`) and the maximum (`domain[1]`).
- * [ ] If <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b> is defined and the column type is "date", then all values in the column must fall within the domain.
-
-
-Variable width binning should be supported in the future (e.g. Jenks Natural Breaks for Choropleth maps).
+Variable width binning should be supported in the future (e.g. for [Jenks Natural Breaks for Choropleth maps](https://github.com/chiasm-project/chiasm/issues/51)).
