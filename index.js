@@ -1,6 +1,10 @@
 var strings = {
   no_data_property: "The dataset.data property does not exist.",
-  data_not_array: "The dataset.data property is not an array, its type is '%type%'."
+  data_not_array: "The dataset.data property is not an array, its type is '%type%'.",
+  data_not_array_of_objects: [
+    "The dataset.data property is not an array of row objects,",
+    " it is an array whose elements are of type '%type%'."
+  ].join("")
 };
 
 function error(id, params){
@@ -26,14 +30,26 @@ module.exports = {
 
       // Validate that the `data` property exists.
       if(!dataset.data){
-        reject(error("no_data_property"));
+        return reject(error("no_data_property"));
+      }
 
       // Validate that the `data` property is an array.
-      } else if((typeof dataset.data) !== "Array"){
-        reject(error("data_not_array", { type: typeof dataset.data}));
-      } else {
-        resolve();
+      if(dataset.data.constructor !== Array){
+        return reject(error("data_not_array", {
+          type: typeof dataset.data
+        }));
       }
+
+      // Validate that the `data` property is an array of objects.
+      // Checks the first element only.
+      if(dataset.data.length > 0 && (typeof dataset.data[0]) !== "object"){
+        return reject(error("data_not_array_of_objects", {
+          type: typeof dataset.data[0]
+        }));
+      }
+
+      // If we got here, then all the validation tests passed.
+      resolve();
     });
   }
 };

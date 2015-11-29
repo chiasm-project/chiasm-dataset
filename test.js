@@ -18,7 +18,9 @@ describe("chiasm-dataset", function () {
       data: "foo"
     }).then(function (){}, function (err) {
       expect(err).to.exist;
-      expect(err.message).to.equal(errorMessage("data_not_array", { type: "string" }));
+      expect(err.message).to.equal(errorMessage("data_not_array", {
+        type: "string"
+      }));
       done();
     });
   });
@@ -28,7 +30,34 @@ describe("chiasm-dataset", function () {
       data: 5
     }).then(function (){}, function (err) {
       expect(err).to.exist;
-      expect(err.message).to.equal(errorMessage("data_not_array", { type: "number" }));
+      expect(err.message).to.equal(errorMessage("data_not_array", {
+        type: "number"
+      }));
+      done();
+    });
+  });
+
+  it("should validate that the `data` property is an array of objects (reject string array).", function(done) {
+    ChiasmDataset.validate({
+      data: ["foo", "bar"]
+    }).then(function (){}, function (err) {
+      expect(err).to.exist;
+      expect(err.message).to.equal(errorMessage("data_not_array_of_objects", {
+        type: "string"
+      }));
+      done();
+    });
+  });
+
+  it("should validate that the `data` property is an array of objects (reject number array).", function(done) {
+    ChiasmDataset.validate({
+      data: [1, 2, 3]
+    }).then(function (){}, function (err) {
+      console.log(err);
+      expect(err).to.exist;
+      expect(err.message).to.equal(errorMessage("data_not_array_of_objects", {
+        type: "number"
+      }));
       done();
     });
   });
