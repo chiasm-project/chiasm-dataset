@@ -8,6 +8,10 @@ var strings = {
   metadata_missing: "The dataset.metadata property is missing.",
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
   metadata_missing_columns: "The dataset.metadata.columns property is missing.",
+  metadata_columns_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
+
+  // TODO test
+  metadata_columns_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data.",
 };
 
 function error(id, params){
@@ -72,6 +76,36 @@ function validate(dataset){
     // Validate that the `metadata.columns` property exists.
     if(!dataset.metadata.columns){
       return reject(error("metadata_missing_columns"));
+    }
+
+    //////////////////////
+    // dataset.data     //
+    //       AND        //
+    // dataset.metadata //
+    //////////////////////
+    
+    var columnsInMetadata = {};
+    dataset.metadata.columns.forEach(function (column){
+      columnsInMetadata[column.name] = true;
+      //columnsInMetadata[column.name] = column.type;
+    });
+
+    // Validate that all columns present in the data are also present in metadata.
+    var columnInDataNotInMetadata;
+    var columnsInDataAreInMetadata = dataset.data.every(function (row){
+      return Object.keys(row).every(function (columnInData){
+        if(columnsInMetadata[columnInData]){
+          return true;
+        } else {
+          columnInDataNotInMetadata = columnInData
+          return false;
+        }
+      });
+    });
+    if(!columnsInDataAreInMetadata){
+      return reject(error("metadata_columns_in_data_not_metadata", {
+        column: columnInDataNotInMetadata
+      }));
     }
 
     // If we got here, then all the validation tests passed.
