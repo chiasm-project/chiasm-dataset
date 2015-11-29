@@ -8,10 +8,8 @@ var strings = {
   metadata_missing: "The dataset.metadata property is missing.",
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
   metadata_missing_columns: "The dataset.metadata.columns property is missing.",
-  metadata_columns_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
-
-  // TODO test
-  metadata_columns_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data.",
+  column_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
+  column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data.",
 };
 
 function error(id, params){
@@ -84,15 +82,23 @@ function validate(dataset){
     // dataset.metadata //
     //////////////////////
     
+    // Index the columns in the metadata.
     var columnsInMetadata = {};
     dataset.metadata.columns.forEach(function (column){
       columnsInMetadata[column.name] = true;
       //columnsInMetadata[column.name] = column.type;
     });
 
+    //// Index the columns in the data (based on the first row only).
+    //var columnsInData = {};
+    //Object.keys(dataset.data[0]).forEach(function (columnName){
+    //  columnsInData[columnName] = true;
+    //});
+
+
     // Validate that all columns present in the data are also present in metadata.
     var columnInDataNotInMetadata;
-    var columnsInDataAreInMetadata = dataset.data.every(function (row){
+    var allColumnsInDataAreInMetadata = dataset.data.every(function (row){
       return Object.keys(row).every(function (columnInData){
         if(columnsInMetadata[columnInData]){
           return true;
@@ -102,11 +108,27 @@ function validate(dataset){
         }
       });
     });
-    if(!columnsInDataAreInMetadata){
-      return reject(error("metadata_columns_in_data_not_metadata", {
+    if(!allColumnsInDataAreInMetadata){
+      return reject(error("column_in_data_not_metadata", {
         column: columnInDataNotInMetadata
       }));
     }
+
+    // Validate that all columns present in the metadata are also present in the data.
+    //var columnInMetadataNotInData;
+    //var allColumnsInMetadataAreInData = dataset.metadata.columns.every(function (columnInMetadata){
+    //  if(columnsInData[columnInMetadata]){
+    //    return true;
+    //  } else {
+    //    columnInMetadataNotInData = columnInMetadata
+    //    return false;
+    //  }
+    //});
+    //if(!allColumnsInMetadataAreInData){
+    //  return reject(error("column_in_metadata_not_data", {
+    //    column: columnInMetadataNotInData
+    //  }));
+    //}
 
     // If we got here, then all the validation tests passed.
     resolve();

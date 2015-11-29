@@ -6,6 +6,7 @@ var expect = require("chai").expect,
 function reject(options, done){
   ChiasmDataset.validate(options.dataset)
     .then(function (){}, function (err) {
+      //console.log(err.stack);
       expect(err.message)
         .to
         .equal(errorMessage(options.errorId, options.errorParams));
@@ -121,7 +122,8 @@ describe("chiasm-dataset", function () {
       errorId: "metadata_missing_columns"
     }, done);
   });
-  it("All columns present in the data are also present in metadata.", function(done) {
+
+  it("All columns present in the data are also present in the metadata.", function(done) {
     reject({
       dataset: {
         data: [
@@ -132,11 +134,29 @@ describe("chiasm-dataset", function () {
           columns: []
         }
       },
-      errorId: "metadata_columns_in_data_not_metadata",
+      errorId: "column_in_data_not_metadata",
       errorParams: { column: "name" }
-//      errorId: "metadata_columns_in_metadata_not_data"
     }, done);
   });
+
+  //it("All columns present in the metadata are also present in the data.", function(done) {
+  //  reject({
+  //    dataset: {
+  //      data: [
+  //        { name: "Joe" },
+  //        { name: "Jane" }
+  //      ],
+  //      metadata: {
+  //        columns: [
+  //          { name: "name", type: "string" },
+  //          { name: "foo", type: "string" }
+  //        ]
+  //      }
+  //    },
+  //    errorId: "metadata_columns_in_metadata_not_data",
+  //    errorParams: { column: "foo" }
+  //  }, done);
+  //});
 
 // TODO reject this
 //    ChiasmDataset.validate({
@@ -159,16 +179,6 @@ describe("chiasm-dataset", function () {
 //      }
 //    }).then(done);
 //
-// TODO reject this
-//    ChiasmDataset.validate({
-//      data: [
-//      ],
-//      metadata: {
-//        columns: [
-//          { name: "foo", type: "string" }
-//        ]
-//      }
-//    }).then(done);
 
   it("should pass validation for a valid dataset.", function(done) {
     ChiasmDataset.validate({
