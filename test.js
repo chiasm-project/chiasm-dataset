@@ -71,6 +71,14 @@ describe("chiasm-dataset", function () {
       errorParams: { type: "number" }
     }, done);
   });
+
+  it("`data` property is an array of objects (inspect all elements).", function(done) {
+    reject({
+      dataset: { data: [{ x: 5 }, { x: 6 }, 3] },
+      errorId: "data_not_array_of_objects",
+      errorParams: { type: "number" }
+    }, done);
+  });
   
   it("`metadata` property exists.", function(done) {
     reject({

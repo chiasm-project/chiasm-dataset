@@ -56,9 +56,19 @@ function validate(dataset){
 
     // Validate that the `data` property is an array of objects.
     // Checks the first element only.
-    if(dataset.data.length > 0 && (typeof dataset.data[0]) !== "object"){
+    var nonObjectType;
+    var allRowsAreObjects = dataset.data.every(function (d){
+      var type = typeof d;
+      if(type === "object"){
+        return true;
+      } else {
+        nonObjectType = type;
+        return false;
+      }
+    });
+    if(!allRowsAreObjects){
       return reject(error("data_not_array_of_objects", {
-        type: typeof dataset.data[0]
+        type: nonObjectType
       }));
     }
 
