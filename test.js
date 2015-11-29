@@ -17,8 +17,12 @@ describe("chiasm-dataset", function () {
 
   it("`data` property exists.", function(done) {
     ChiasmDataset.validate({}).then(function (){}, function (err) {
+
+      // Here's how you can see a stack trace for debugging.
+      //console.log(err.stack);
+
       expect(err).to.exist;
-      expect(err.message).to.equal(strings.no_data_property);
+      expect(err.message).to.equal(strings.data_missing);
       done();
     });
   });
@@ -66,12 +70,20 @@ describe("chiasm-dataset", function () {
       errorParams: { type: "number" }
     }, done);
   });
+  
+  it("`metadata` property exists.", function(done) {
+    reject({
+      dataset: { data: [
+        { name: "Joe" },
+        { name: "Jane" }
+      ] },
+      errorId: "metadata_missing"
+    }, done);
+  });
 
 // TODO reject this
 //    ChiasmDataset.validate({
 //      data: [
-//        { name: "Joe" },
-//        { name: "Jane" }
 //      ]
 //    }).then(done);
 
