@@ -109,18 +109,18 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-  //it("`metadata.columns` property exists.", function(done) {
-  //  reject({
-  //    dataset: {
-  //      data: [
-  //        { name: "Joe" },
-  //        { name: "Jane" }
-  //      ],
-  //      metadata: {}
-  //    },
-  //    errorId: "metadata_missing_columns"
-  //  }, done);
-  //});
+  it("`metadata.columns` property exists.", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: {}
+      },
+      errorId: "metadata_missing_columns"
+    }, done);
+  });
 
 
 // TODO reject this

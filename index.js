@@ -6,12 +6,8 @@ var strings = {
     " it is an array whose elements are of type '%type%'."
   ].join(""),
   metadata_missing: "The dataset.metadata property is missing.",
-
-  // TODO test
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
-
   metadata_missing_columns: "The dataset.metadata.columns property is missing.",
-  
 };
 
 function error(id, params){
@@ -31,6 +27,10 @@ function template(str, params){
 
 function validate(dataset){
   return new Promise(function (resolve, reject){
+
+    //////////////////
+    // dataset.data //
+    //////////////////
 
     // Validate that the `data` property exists.
     if(!dataset.data){
@@ -53,6 +53,9 @@ function validate(dataset){
     }
 
 
+    //////////////////////
+    // dataset.metadata //
+    //////////////////////
 
     // Validate that the `metadata` property exists.
     if(!dataset.metadata){
@@ -64,6 +67,11 @@ function validate(dataset){
       return reject(error("metadata_not_object", {
         type: typeof dataset.metadata
       }));
+    }
+
+    // Validate that the `metadata.columns` property exists.
+    if(!dataset.metadata.columns){
+      return reject(error("metadata_missing_columns"));
     }
 
     // If we got here, then all the validation tests passed.
