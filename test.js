@@ -43,8 +43,7 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-
-  it("should validate that the `data` property is an array of objects (reject number).", function(done) {
+  it("`data` property is an array of objects (reject number).", function(done) {
     reject({
       dataset: { data: 5 },
       errorId: "data_not_array",
@@ -52,7 +51,7 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-  it("should validate that the `data` property is an array of objects (reject string array).", function(done) {
+  it("`data` property is an array of objects (reject string array).", function(done) {
     reject({
       dataset: { data: ["foo", "bar"] },
       errorId: "data_not_array_of_objects",
@@ -60,7 +59,7 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-  it("should validate that the `data` property is an array of objects (reject number array).", function(done) {
+  it("`data` property is an array of objects (reject number array).", function(done) {
     reject({
       dataset: { data: [1, 2, 3] },
       errorId: "data_not_array_of_objects",
