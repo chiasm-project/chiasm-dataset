@@ -3,10 +3,15 @@ var expect = require("chai").expect,
     strings = ChiasmDataset.strings,
     errorMessage = ChiasmDataset.errorMessage;
 
-function reject(options, done){
+function reject(options, done, printErr){
   ChiasmDataset.validate(options.dataset)
     .then(function (){}, function (err) {
-      //console.log(err.stack);
+
+      if(printErr){
+        console.log(err.message);
+        console.log(err.stack);
+      }
+
       expect(err.message)
         .to
         .equal(errorMessage(options.errorId, options.errorParams));
@@ -221,6 +226,27 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
+  it("`metadata.columns` entries must have a 'name' property.", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { },
+          { }
+        ],
+        metadata: {
+          columns: [{}]
+        }
+      },
+      errorId: "metadata_columns_name_missing"
+    }, done); 
+  });
+
+ //TODO
+ //each column descriptor object has a "name" field
+ //each column descriptor object has a "name" field that is a string
+ //each column descriptor object has a "type" field
+ //each column descriptor object has a "type" field whose value is "number", "string", or "date"
+
   it("All columns present in the data are also present in the metadata.", function(done) {
     reject({
       dataset: {
@@ -313,6 +339,6 @@ describe("chiasm-dataset", function () {
           { name: "name", type: "string" }
         ]
       }
-    }).then(done, console.log);
+    }).then(done);
   });
 });
