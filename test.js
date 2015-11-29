@@ -446,4 +446,20 @@ describe("chiasm-dataset", function () {
       }
     }).then(done);
   });
+
+  it("should pass validation for a valid cube dataset", function(done) {
+    ChiasmDataset.validate({
+      data: [
+        { name: "China", population: 1376048943 },
+        { name: "India", population: 1311050527 }
+      ],
+      metadata: {
+        isCube: true,
+        columns: [
+          { name: "name", type: "string", isDimension: true},
+          { name: "population", type: "number" }
+        ]
+      }
+    }).then(done);
+  });
 });
