@@ -9,8 +9,6 @@ var strings = {
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
   metadata_missing_columns: "The dataset.metadata.columns property is missing.",
   metadata_columns_not_array: "The dataset.metadata.columns property is not an array, its type is '%type%'.",
-
-  // TODO
   metadata_columns_not_array_of_objects: [
     "The dataset.metadata.columns property is not an array of column descriptor objects,",
     " it is an array whose elements are of type '%type%'."
@@ -55,7 +53,6 @@ function validate(dataset){
     }
 
     // Validate that the `data` property is an array of objects.
-    // Checks the first element only.
     var nonObjectType;
     var allRowsAreObjects = dataset.data.every(function (d){
       var type = typeof d;
@@ -100,6 +97,25 @@ function validate(dataset){
         type: typeof dataset.metadata.columns
       }));
     }
+
+    // Validate that the `metadata.columns` property is an array of objects.
+    var nonObjectType;
+    var allColumnsAreObjects = dataset.metadata.columns.every(function (d){
+      var type = typeof d;
+      if(type === "object"){
+        return true;
+      } else {
+        nonObjectType = type;
+        return false;
+      }
+    });
+    if(!allColumnsAreObjects){
+      return reject(error("metadata_columns_not_array_of_objects", {
+        type: nonObjectType
+      }));
+    }
+
+    
 
     //////////////////////
     // dataset.data     //
