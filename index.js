@@ -8,6 +8,13 @@ var strings = {
   metadata_missing: "The dataset.metadata property is missing.",
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
   metadata_missing_columns: "The dataset.metadata.columns property is missing.",
+  metadata_columns_not_array: "The dataset.metadata.columns property is not an array, its type is '%type%'.",
+
+  // TODO
+  metadata_columns_not_array_of_objects: [
+    "The dataset.metadata.columns property is not an array of column descriptor objects,",
+    " it is an array whose elements are of type '%type%'."
+  ].join(""),
   column_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
   column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data."
 //column_type_mismatch: "The column '%column%' is present in the data, but its type does not match that declared in dataset.metadata.columns. The type of the data value '%value%' for column '%column' is '%typeInData%', but is declared to be of type %typeInMetadata% in dataset.metadata.columns.",
@@ -75,6 +82,13 @@ function validate(dataset){
     // Validate that the `metadata.columns` property exists.
     if(!dataset.metadata.columns){
       return reject(error("metadata_missing_columns"));
+    }
+
+    // Validate that the `metadata.columns` property is an array.
+    if(dataset.metadata.columns.constructor !== Array){
+      return reject(error("metadata_columns_not_array", {
+        type: typeof dataset.metadata.columns
+      }));
     }
 
     //////////////////////

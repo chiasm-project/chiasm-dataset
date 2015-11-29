@@ -123,6 +123,42 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
+  it("`metadata.columns` must be an array (reject string).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: {
+          columns: "foo"
+        }
+      },
+      errorId: "metadata_columns_not_array",
+      errorParams: {
+        type: "string"
+      }
+    }, done);
+  });
+
+  it("`metadata.columns` must be an array (reject number).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: {
+          columns: 5
+        }
+      },
+      errorId: "metadata_columns_not_array",
+      errorParams: {
+        type: "number"
+      }
+    }, done);
+  });
+
   it("All columns present in the data are also present in the metadata.", function(done) {
     reject({
       dataset: {
