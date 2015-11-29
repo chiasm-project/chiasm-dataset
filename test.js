@@ -263,7 +263,7 @@ describe("chiasm-dataset", function () {
   it("`metadata.columns` entries must have a 'type' property.", function(done) {
     reject({
       dataset: {
-        data: [{ x: 5 },{ x: 10}],
+        data: [{ x: 5 }, { x: 10}],
         metadata: {
           columns: [{
             name: "x"
@@ -274,6 +274,40 @@ describe("chiasm-dataset", function () {
       errorParams: {
         column: "x"
       }
+    }, done); 
+  });
+
+  it("`metadata.columns` entries must have a 'type' property (inspect all entries).", function(done) {
+    reject({
+      dataset: {
+        data: [{ x: 5, y:10 }],
+        metadata: {
+          columns: [
+            { name: "x", type: "number" },
+            { name: "y" }
+          ]
+        }
+      },
+      errorId: "metadata_columns_type_missing",
+      errorParams: {
+        column: "y"
+      }
+    }, done); 
+  });
+
+  it("`metadata.columns` entries must have a 'type' property that is a valid value.", function(done) {
+    reject({
+      dataset: {
+        data: [{ x: 5, y:10 }],
+        metadata: {
+          columns: [
+            { name: "x", type: "number" },
+            { name: "y", type: "invalid foo" }
+          ]
+        }
+      },
+      errorId: "metadata_columns_type_not_valid",
+      errorParams: { column: "y" }
     }, done); 
   });
 
