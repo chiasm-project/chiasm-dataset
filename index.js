@@ -18,8 +18,8 @@ var strings = {
   metadata_columns_type_missing: "The 'type' property is missing from the '%column%' column descriptor entry in dataset.metadata.columns.",
   metadata_columns_type_not_valid: "The 'type' property for the '%column%' column descriptor is not a valid value.",
   column_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
-  column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data."
-//column_type_mismatch: "The column '%column%' is present in the data, but its type does not match that declared in dataset.metadata.columns. The type of the data value '%value%' for column '%column' is '%typeInData%', but is declared to be of type %typeInMetadata% in dataset.metadata.columns.",
+  column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data.",
+  column_type_mismatch: "The column '%column%' is present in the data, but its type does not match that declared in dataset.metadata.columns. The type of the data value '%value%' for column '%column' is '%typeInData%', but is declared to be of type '%typeInMetadata%' in dataset.metadata.columns.",
 };
 
 var validTypes = {
@@ -178,8 +178,8 @@ function validate(dataset){
     // Index the columns in the metadata.
     var columnsInMetadata = {};
     dataset.metadata.columns.forEach(function (column){
-      columnsInMetadata[column.name] = true;
-      //columnsInMetadata[column.name] = column.type;
+      //columnsInMetadata[column.name] = true;
+      columnsInMetadata[column.name] = column.type;
     });
 
     //// Index the columns in the data (based on the first row only).
@@ -191,9 +191,36 @@ function validate(dataset){
 
     // Validate that all columns present in the data are also present in metadata.
     var columnInDataNotInMetadata;
-    var allColumnsInDataAreInMetadata = dataset.data.every(function (row){
+
+    // In the same pass over the data, validate that types match.
+    var typeMismatchParams;
+
+    var allIsWell = dataset.data.every(function (row){
       return Object.keys(row).every(function (columnInData){
-        if(columnsInMetadata[columnInData]){
+        var typeInMetadata = columnsInMetadata[columnInData];
+
+        // Check that the column is present in metadata.
+        if(typeInMetadata){
+
+          // Check that the actual type matches the declared type.
+          var value = row[columnInData];
+          var typeInData = typeof value;
+
+          // Detect Date types.
+          if(typeInData === "object" && value.constructor === Date){
+            typeInData = "date";
+          }
+
+          if(typeInData !== typeInMetadata){
+            typeMismatchParams = {
+              column: columnInData,
+              value: value,
+              typeInData: typeInData,
+              typeInMetadata: typeInMetadata
+            };
+            return false;
+          }
+
           return true;
         } else {
           columnInDataNotInMetadata = columnInData
@@ -201,11 +228,18 @@ function validate(dataset){
         }
       });
     });
-    if(!allColumnsInDataAreInMetadata){
-      return reject(error("column_in_data_not_metadata", {
-        column: columnInDataNotInMetadata
-      }));
+    if(!allIsWell){
+      if(columnInDataNotInMetadata){
+        return reject(error("column_in_data_not_metadata", {
+          column: columnInDataNotInMetadata
+        }));
+      } else {
+
+        // If we got here, then there was a type mismatch.
+        return reject(error("column_type_mismatch", typeMismatchParams));
+      }
     }
+
 
     // Validate that all columns present in the metadata are also present in the data.
     var columnInMetadataNotInData;

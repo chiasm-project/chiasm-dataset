@@ -348,53 +348,76 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-//  it("Types in data must match types in metadata (reject string in data != number in metadata).", function(done) {
-//    reject({
-//      dataset: {
-//        data: [
-//          { name: "Joe" },
-//          { name: "Jane" }
-//        ],
-//        metadata: {
-//          columns: [
-//            { name: "name", type: "number" }
-//          ]
-//        }
-//      }
-//      errorId: "column_type_mismatch",
-//      errorParams: {
-//        column: "name",
-//        value: "Joe",
-//        typeInData: "string",
-//        typeInMetadata: "number"
-//      }
-//    }, done);
-//  });
+  it("Types in data must match types in metadata (reject string in data != number in metadata).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: {
+          columns: [
+            { name: "name", type: "number" }
+          ]
+        }
+      },
+      errorId: "column_type_mismatch",
+      errorParams: {
+        column: "name",
+        value: "Joe",
+        typeInData: "string",
+        typeInMetadata: "number"
+      }
+    }, done);
+  });
 
-//  it("Types in data must match types in metadata (reject number in data != string in metadata).", function(done) {
-//    reject({
-//      dataset: {
-//        data: [
-//          { name: 5 },
-//          { name: 6 }
-//        ],
-//        metadata: {
-//          columns: [
-//            { name: "name", type: "string" }
-//          ]
-//        }
-//      }
-//      errorId: "column_type_mismatch",
-//      errorParams: {
-//        column: "name",
-//        value: 5,
-//        typeInData: "number",
-//        typeInMetadata: "string"
-//      }
-//    }, done);
-//  });
+  it("Types in data must match types in metadata (reject number in data != string in metadata).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: 5 },
+          { name: 6 }
+        ],
+        metadata: {
+          columns: [
+            { name: "name", type: "string" }
+          ]
+        }
+      },
+      errorId: "column_type_mismatch",
+      errorParams: {
+        column: "name",
+        value: 5,
+        typeInData: "number",
+        typeInMetadata: "string"
+      }
+    }, done);
+  });
 
-  it("should pass validation for a valid dataset.", function(done) {
+  it("Types in data must match types in metadata (reject date in data != string in metadata).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: new Date(2000) },
+          { name: new Date(2001) }
+        ],
+        metadata: {
+          columns: [
+            { name: "name", type: "string" }
+          ]
+        }
+      },
+      errorId: "column_type_mismatch",
+      errorParams: {
+        column: "name",
+        value: new Date(2000),
+        typeInData: "date",
+        typeInMetadata: "string"
+      }
+    }, done);
+  });
+
+  it("should pass validation for a valid dataset (with strings only).", function(done) {
     ChiasmDataset.validate({
       data: [
         { name: "Joe" },
@@ -403,6 +426,22 @@ describe("chiasm-dataset", function () {
       metadata: {
         columns: [
           { name: "name", type: "string" }
+        ]
+      }
+    }).then(done);
+  });
+
+  it("should pass validation for a valid dataset (with strings, numbers, and dates).", function(done) {
+    ChiasmDataset.validate({
+      data: [
+        { name: "Joe",  age: 29, birthday: new Date(1986, 11, 17) },
+        { name: "Jane", age: 31, birthday: new Date(1985, 1, 15)  }
+      ],
+      metadata: {
+        columns: [
+          { name: "name", type: "string" },
+          { name: "age", type: "number" },
+          { name: "birthday", type: "date" }
         ]
       }
     }).then(done);
