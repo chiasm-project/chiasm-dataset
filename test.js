@@ -229,15 +229,24 @@ describe("chiasm-dataset", function () {
   it("`metadata.columns` entries must have a 'name' property.", function(done) {
     reject({
       dataset: {
-        data: [
-          { },
-          { }
-        ],
+        data: [{},{}],
         metadata: {
           columns: [{}]
         }
       },
       errorId: "metadata_columns_name_missing"
+    }, done); 
+  });
+
+  it("`metadata.columns` entries must have a 'name' property that is a string (reject number).", function(done) {
+    reject({
+      dataset: {
+        data: [{},{}],
+        metadata: {
+          columns: [{ name: 22 }]
+        }
+      },
+      errorId: "metadata_columns_name_not_string"
     }, done); 
   });
 
