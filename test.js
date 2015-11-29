@@ -3,9 +3,19 @@ var expect = require("chai").expect,
     strings = ChiasmDataset.strings,
     errorMessage = ChiasmDataset.errorMessage;
 
+function reject(options, done){
+  ChiasmDataset.validate(options.dataset)
+    .then(function (){}, function (err) {
+      expect(err.message)
+        .to
+        .equal(errorMessage(options.errorId, options.errorParams));
+      done();
+    });
+}
+
 describe("chiasm-dataset", function () {
 
-  it("should validate that the `data` property exists.", function(done) {
+  it("`data` property exists.", function(done) {
     ChiasmDataset.validate({}).then(function (){}, function (err) {
       expect(err).to.exist;
       expect(err.message).to.equal(strings.no_data_property);
@@ -13,7 +23,7 @@ describe("chiasm-dataset", function () {
     });
   });
 
-  it("should validate that the `data` property is an array of objects (reject string).", function(done) {
+  it("`data` property is an array of objects (reject string).", function(done) {
     ChiasmDataset.validate({
       data: "foo"
     }).then(function (){}, function (err) {
@@ -25,40 +35,37 @@ describe("chiasm-dataset", function () {
     });
   });
 
+  it("`data` property is an array of objects (reject string) using reject function.", function(done) {
+    reject({
+      dataset: { data: "foo" },
+      errorId: "data_not_array",
+      errorParams: { "type": "string" }
+    }, done);
+  });
+
+
   it("should validate that the `data` property is an array of objects (reject number).", function(done) {
-    ChiasmDataset.validate({
-      data: 5
-    }).then(function (){}, function (err) {
-      expect(err).to.exist;
-      expect(err.message).to.equal(errorMessage("data_not_array", {
-        type: "number"
-      }));
-      done();
-    });
+    reject({
+      dataset: { data: 5 },
+      errorId: "data_not_array",
+      errorParams: { "type": "number" }
+    }, done);
   });
 
   it("should validate that the `data` property is an array of objects (reject string array).", function(done) {
-    ChiasmDataset.validate({
-      data: ["foo", "bar"]
-    }).then(function (){}, function (err) {
-      expect(err).to.exist;
-      expect(err.message).to.equal(errorMessage("data_not_array_of_objects", {
-        type: "string"
-      }));
-      done();
-    });
+    reject({
+      dataset: { data: ["foo", "bar"] },
+      errorId: "data_not_array_of_objects",
+      errorParams: { type: "string" }
+    }, done);
   });
 
   it("should validate that the `data` property is an array of objects (reject number array).", function(done) {
-    ChiasmDataset.validate({
-      data: [1, 2, 3]
-    }).then(function (){}, function (err) {
-      expect(err).to.exist;
-      expect(err.message).to.equal(errorMessage("data_not_array_of_objects", {
-        type: "number"
-      }));
-      done();
-    });
+    reject({
+      dataset: { data: [1, 2, 3] },
+      errorId: "data_not_array_of_objects",
+      errorParams: { type: "number" }
+    }, done);
   });
 
 // TODO reject this
@@ -96,6 +103,17 @@ describe("chiasm-dataset", function () {
 //      data: [
 //        { name: "Joe" },
 //        { name: "Jane" }
+//      ],
+//      metadata: {
+//        columns: [
+//          { name: "foo", type: "string" }
+//        ]
+//      }
+//    }).then(done);
+//
+// TODO reject this
+//    ChiasmDataset.validate({
+//      data: [
 //      ],
 //      metadata: {
 //        columns: [
