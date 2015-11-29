@@ -1,6 +1,6 @@
 {
   "name": "chiasm-dataset",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A data structure for representing tabular data.",
   "main": "index.js",
   "scripts": {
