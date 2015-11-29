@@ -90,10 +90,10 @@ function validate(dataset){
     });
 
     //// Index the columns in the data (based on the first row only).
-    //var columnsInData = {};
-    //Object.keys(dataset.data[0]).forEach(function (columnName){
-    //  columnsInData[columnName] = true;
-    //});
+    var columnsInData = {};
+    Object.keys(dataset.data[0]).forEach(function (columnName){
+      columnsInData[columnName] = true;
+    });
 
 
     // Validate that all columns present in the data are also present in metadata.
@@ -115,20 +115,21 @@ function validate(dataset){
     }
 
     // Validate that all columns present in the metadata are also present in the data.
-    //var columnInMetadataNotInData;
-    //var allColumnsInMetadataAreInData = dataset.metadata.columns.every(function (columnInMetadata){
-    //  if(columnsInData[columnInMetadata]){
-    //    return true;
-    //  } else {
-    //    columnInMetadataNotInData = columnInMetadata
-    //    return false;
-    //  }
-    //});
-    //if(!allColumnsInMetadataAreInData){
-    //  return reject(error("column_in_metadata_not_data", {
-    //    column: columnInMetadataNotInData
-    //  }));
-    //}
+    var columnInMetadataNotInData;
+    var allColumnsInMetadataAreInData = dataset.metadata.columns.every(function (column){
+      var columnInMetadata = column.name;
+      if(columnsInData[columnInMetadata]){
+        return true;
+      } else {
+        columnInMetadataNotInData = columnInMetadata
+        return false;
+      }
+    });
+    if(!allColumnsInMetadataAreInData){
+      return reject(error("column_in_metadata_not_data", {
+        column: columnInMetadataNotInData
+      }));
+    }
 
     // If we got here, then all the validation tests passed.
     resolve();

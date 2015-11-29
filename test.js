@@ -139,24 +139,24 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-  //it("All columns present in the metadata are also present in the data.", function(done) {
-  //  reject({
-  //    dataset: {
-  //      data: [
-  //        { name: "Joe" },
-  //        { name: "Jane" }
-  //      ],
-  //      metadata: {
-  //        columns: [
-  //          { name: "name", type: "string" },
-  //          { name: "foo", type: "string" }
-  //        ]
-  //      }
-  //    },
-  //    errorId: "metadata_columns_in_metadata_not_data",
-  //    errorParams: { column: "foo" }
-  //  }, done);
-  //});
+  it("All columns present in the metadata are also present in the data.", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: {
+          columns: [
+            { name: "name", type: "string" },
+            { name: "foo", type: "string" }
+          ]
+        }
+      },
+      errorId: "column_in_metadata_not_data",
+      errorParams: { column: "foo" }
+    }, done);
+  });
 
 // TODO reject this
 //    ChiasmDataset.validate({
