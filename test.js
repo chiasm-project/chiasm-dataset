@@ -81,11 +81,47 @@ describe("chiasm-dataset", function () {
     }, done);
   });
 
-// TODO reject this
-//    ChiasmDataset.validate({
-//      data: [
-//      ]
-//    }).then(done);
+  it("`metadata` property is an object (reject string).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: "yo mama"
+      },
+      errorId: "metadata_not_object",
+      errorParams: { type: "string" }
+    }, done);
+  });
+
+  it("`metadata` property is an object (reject number).", function(done) {
+    reject({
+      dataset: {
+        data: [
+          { name: "Joe" },
+          { name: "Jane" }
+        ],
+        metadata: 5000
+      },
+      errorId: "metadata_not_object",
+      errorParams: { type: "number" }
+    }, done);
+  });
+
+  //it("`metadata.columns` property exists.", function(done) {
+  //  reject({
+  //    dataset: {
+  //      data: [
+  //        { name: "Joe" },
+  //        { name: "Jane" }
+  //      ],
+  //      metadata: {}
+  //    },
+  //    errorId: "metadata_missing_columns"
+  //  }, done);
+  //});
+
 
 // TODO reject this
 //    ChiasmDataset.validate({

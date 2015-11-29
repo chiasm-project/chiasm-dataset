@@ -9,6 +9,9 @@ var strings = {
 
   // TODO test
   metadata_not_object: "The dataset.metadata property is not an object, its type is '%type%'.",
+
+  metadata_missing_columns: "The dataset.metadata.columns property is missing.",
+  
 };
 
 function error(id, params){
@@ -49,9 +52,18 @@ function validate(dataset){
       }));
     }
 
+
+
     // Validate that the `metadata` property exists.
     if(!dataset.metadata){
       return reject(error("metadata_missing"));
+    }
+
+    // Validate that the `metadata` property is an object.
+    if(typeof dataset.metadata !== "object"){
+      return reject(error("metadata_not_object", {
+        type: typeof dataset.metadata
+      }));
     }
 
     // If we got here, then all the validation tests passed.
