@@ -53,7 +53,6 @@ describe("chiasm-dataset", function () {
     ChiasmDataset.validate({
       data: [1, 2, 3]
     }).then(function (){}, function (err) {
-      console.log(err);
       expect(err).to.exist;
       expect(err.message).to.equal(errorMessage("data_not_array_of_objects", {
         type: "number"
@@ -62,4 +61,60 @@ describe("chiasm-dataset", function () {
     });
   });
 
+// TODO reject this
+//    ChiasmDataset.validate({
+//      data: [
+//        { name: "Joe" },
+//        { name: "Jane" }
+//      ]
+//    }).then(done);
+
+// TODO reject this
+//    ChiasmDataset.validate({
+//      data: [
+//        { name: "Joe" },
+//        { name: "Jane" }
+//      ],
+//      metadata: {
+//      }
+//    }).then(done);
+
+// TODO reject this
+//    ChiasmDataset.validate({
+//      data: [
+//        { name: "Joe" },
+//        { name: "Jane" }
+//      ],
+//      metadata: {
+//        columns: [
+//        ]
+//      }
+//    }).then(done);
+
+// TODO reject this
+//    ChiasmDataset.validate({
+//      data: [
+//        { name: "Joe" },
+//        { name: "Jane" }
+//      ],
+//      metadata: {
+//        columns: [
+//          { name: "foo", type: "string" }
+//        ]
+//      }
+//    }).then(done);
+
+  it("should pass validation for a valid dataset.", function(done) {
+    ChiasmDataset.validate({
+      data: [
+        { name: "Joe" },
+        { name: "Jane" }
+      ],
+      metadata: {
+        columns: [
+          { name: "name", type: "string" }
+        ]
+      }
+    }).then(done);
+  });
 });
