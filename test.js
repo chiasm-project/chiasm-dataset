@@ -298,22 +298,20 @@ describe("chiasm-dataset", function () {
   it("`metadata.columns` entries must have a 'type' property that is a valid value.", function(done) {
     reject({
       dataset: {
-        data: [{ x: 5, y:10 }],
+        data: [{ x: 5, y:"str", z: new Date(), foo: { not: "allowed"} }],
         metadata: {
           columns: [
             { name: "x", type: "number" },
-            { name: "y", type: "invalid foo" }
+            { name: "y", type: "string" },
+            { name: "z", type: "date" },
+            { name: "foo", type: "invalid" }
           ]
         }
       },
       errorId: "metadata_columns_type_not_valid",
-      errorParams: { column: "y" }
+      errorParams: { column: "foo" }
     }, done); 
   });
-
- //TODO
- //each column descriptor object has a "type" field
- //each column descriptor object has a "type" field whose value is "number", "string", or "date"
 
   it("All columns present in the data are also present in the metadata.", function(done) {
     reject({
