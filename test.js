@@ -237,7 +237,6 @@ describe("chiasm-dataset", function () {
       errorId: "metadata_columns_name_missing"
     }, done); 
   });
-
   it("`metadata.columns` entries must have a 'name' property that is a string (reject number).", function(done) {
     reject({
       dataset: {
@@ -249,10 +248,36 @@ describe("chiasm-dataset", function () {
       errorId: "metadata_columns_name_not_string"
     }, done); 
   });
+  it("`metadata.columns` entries must have a 'name' property that is a string (reject object).", function(done) {
+    reject({
+      dataset: {
+        data: [{},{}],
+        metadata: {
+          columns: [{ name: { total: "crap" } }]
+        }
+      },
+      errorId: "metadata_columns_name_not_string"
+    }, done); 
+  });
+
+  it("`metadata.columns` entries must have a 'type' property.", function(done) {
+    reject({
+      dataset: {
+        data: [{ x: 5 },{ x: 10}],
+        metadata: {
+          columns: [{
+            name: "x"
+          }]
+        }
+      },
+      errorId: "metadata_columns_type_missing",
+      errorParams: {
+        column: "x"
+      }
+    }, done); 
+  });
 
  //TODO
- //each column descriptor object has a "name" field
- //each column descriptor object has a "name" field that is a string
  //each column descriptor object has a "type" field
  //each column descriptor object has a "type" field whose value is "number", "string", or "date"
 

@@ -15,6 +15,8 @@ var strings = {
   ].join(""),
   metadata_columns_name_missing: "The 'name' property is missing from a column descriptor entry in dataset.metadata.columns.",
   metadata_columns_name_not_string: "The 'name' property of a column descriptor entry in dataset.metadata.columns is not a string.",
+  metadata_columns_type_missing: "The 'type' property is missing from the '%column%' column descriptor entry in dataset.metadata.columns.",
+//  metadata_columns_type_not_valid: "The 'type' property ...
   column_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
   column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data."
 //column_type_mismatch: "The column '%column%' is present in the data, but its type does not match that declared in dataset.metadata.columns. The type of the data value '%value%' for column '%column' is '%typeInData%', but is declared to be of type %typeInMetadata% in dataset.metadata.columns.",
@@ -131,6 +133,27 @@ function validate(dataset){
       return reject(error("metadata_columns_name_not_string"));
     }
 
+    // Validate that the each column descriptor has a "type" field.
+    var columnNameMissingType;
+    if(!dataset.metadata.columns.every(function (column){
+      if(!column.type){
+        columnNameMissingType = column.name;
+      }
+      return column.type;
+    })){
+      return reject(error("metadata_columns_type_missing", {
+        column: columnNameMissingType
+      }));
+    }
+
+    var validTypes = { string: true, number: true, date: true };
+
+//    // Validate that the each column descriptor has a "type" field that is a string.
+//    if(!dataset.metadata.columns.every(function (column){
+//      return validTypes[column.type];
+//    })){
+//      return reject(error("metadata_columns_type_not_valid"));
+//    }
     
 
     //////////////////////
