@@ -1,5 +1,14 @@
 # chiasm-dataset
+
+[![Build Status](https://travis-ci.org/chiasm-project/chiasm-dataset.svg)](https://travis-ci.org/chiasm-project/chiasm-dataset)
+
 A data structure for representing tabular data.
+
+ * [What Problem Does This Solve?](#what-problem-does-this-solve)
+ * [Usage](#usage)
+ * [Data Structure Reference](#data-structure-reference)
+ * [Related Work](#related-work)
+ * [Roadmap](#roadmap)
 
 Intended for use as:
 
@@ -11,22 +20,50 @@ This data structure accommodates both relational data tables as well as aggregat
 
 The purpose of this data structure is to serve as a common data table representation for use in the [Chiasm project](https://github.com/chiasm-project/chiasm). By using this data structure, components for data access, data transformation, and interactive visualization can be interoperable.
 
+# What Problem Does This Solve?
+Most of the [D3-based data visualization examples](https://github.com/mbostock/d3/wiki/Gallery) are organized such that the data-specific logic is intertwined with data visualization logic. This is a barrier that makes it more difficult to adapt existing visualization examples to new data, or to create reusable visualization components.
+
+For example, in this [Bar Chart Example](http://bl.ocks.org/mbostock/3885304), the visualization logic is deeply entangled with the mapping from data to visual marks and channels in lines of code like this `` Also, the logic that specifies how each column in a CSV file should be parsed is specified using JavaScript, which must be manually changed with changing the data used for the visualization.
+
+Introducing a well defined data structure for dealing with data tables makes it possible to cleanly separate data-specific logic from generic data visualization logic. Using chiasm-dataset as an intermediate data table representation, the [chiasm-dsv-dataset module](https://github.com/chiasm-project/chiasm-dsv-dataset) moves the logic that specifies how each column in a CSV file should be parsed out of JavaScript and into a configuration file. This organization of the code also enables services that may render arbitrary data tables that can be configured dynamically at runtime.
+
+In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels. This enables user interfaces that are aware of column type restrictions for certain visualization, such as dropdown menus restricted by column type, or drag & drop interfaces that know where a given column can and cannot be dropped.
+
+[![](http://image.slidesharecdn.com/2015-150716143500-lva1-app6892/95/visualization-a-primer-basics-techniques-and-guidelines-19-638.jpg?cb=1437057727)](http://www.slideshare.net/cagatayturkay/visualization-a-primer)
+
+Visual Marks and Channels Diagram from [Munzner: Visualization Analysis and Design](https://www.youtube.com/watch?v=jVC6SQS23ak&feature=youtu.be)
+
 # Usage
 
-Note: development has not yet started, following the practice of [README-driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html).
+Since this project is mainly a specification of an in-memory JavaScript data structure, the library it provides is a program that will validate the data structure according to a [set of constraints](https://github.com/chiasm-project/chiasm-dataset/issues/1). Here's some example code that shows how to validate a dataset.
 
 ```javascript
 var ChiasmDataset = require("chiasm-dataset");
-var dataset = new ChiasmDataset(data, metadata);
+
+var dataset = {
+  data: [
+    { name: "Joe",  age: 29, birthday: new Date(1986, 11, 17) },
+    { name: "Jane", age: 31, birthday: new Date(1985, 1, 15)  }
+  ],
+  metadata: {
+    columns: [
+      { name: "name", type: "string" },
+      { name: "age", type: "number" },
+      { name: "birthday", type: "date" }
+    ]
+  }
+};
+
+var promise = ChiasmDataset.validate(dataset);
+
+promise.then(function (){
+  console.log("This dataset successfully passed validation!");
+}, function (err){
+  console.log("This dataset failed validation with the following error: " + err.message);
+});
 ```
 
-At the time of construction, the data structure is validated according to the constraints detailed below. An exception is thrown if the given `data` and `metadata` values violate any constraints.
-
-When writing functions that accept an object that is supposedly a Dataset, you can use `instanceof` to check if it is in fact a Dataset, like this:
-
-```javascript
-if(dataset instanceof Dataset){ ... }
-```
+Note that `ChiasmDataset.validate` returns a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). See the [tests](tests.js) for an enumeration of all possible validation failure errors.
 
 # Data Structure Reference
 
@@ -103,13 +140,8 @@ I hope I'm not reinventing the wheel here. If you know of any JavaScript data fr
 
 # Roadmap
 
-The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following components will be modified to use this data structure as input and/or output:
+The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following issues comprise the roadmap:
 
- * [ ] [chiasm-dsv-dataset](https://github.com/chiasm-project/chiasm-dsv-dataset) Output
- * [ ] [chiasm-crossfilter](https://github.com/chiasm-project/chiasm-crossfilter) Input and Output(s)
- * [ ] [chiasm-data-reduction](https://github.com/chiasm-project/chiasm-data-reduction) Input and Output
- * [ ] [chiasm-charts](https://github.com/chiasm-project/chiasm-charts) Input
-
-There [should be a function that validates the data structure](https://github.com/chiasm-project/chiasm-dataset/issues/1).
-
-Variable width binning should be supported in the future (e.g. for [Jenks Natural Breaks for Choropleth maps](https://github.com/chiasm-project/chiasm/issues/51)).
+ * [Implement validation function](https://github.com/chiasm-project/chiasm-dataset/issues/1)
+ * [Adopt chiasm-dataset in other projects](https://github.com/chiasm-project/chiasm-dataset/issues/2)
+ * [Support variable width binning](https://github.com/chiasm-project/chiasm-dataset/issues/3)
