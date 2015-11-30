@@ -103,13 +103,9 @@ I hope I'm not reinventing the wheel here. If you know of any JavaScript data fr
 
 # Roadmap
 
-The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following components will be modified to use this data structure as input and/or output:
+The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following issues comprise the roadmap:
 
- * [ ] [chiasm-dsv-dataset](https://github.com/chiasm-project/chiasm-dsv-dataset) Output
- * [ ] [chiasm-crossfilter](https://github.com/chiasm-project/chiasm-crossfilter) Input and Output(s)
- * [ ] [chiasm-data-reduction](https://github.com/chiasm-project/chiasm-data-reduction) Input and Output
- * [ ] [chiasm-charts](https://github.com/chiasm-project/chiasm-charts) Input
-
-There [should be a function that validates the data structure](https://github.com/chiasm-project/chiasm-dataset/issues/1).
-
+ * [Implement validation function.](https://github.com/chiasm-project/chiasm-dataset/issues/1).
+ * [Adopt chiasm-dataset in other projects](https://github.com/chiasm-project/chiasm-dataset/issues/2).
+ 
 Variable width binning should be supported in the future (e.g. for [Jenks Natural Breaks for Choropleth maps](https://github.com/chiasm-project/chiasm/issues/51)).
