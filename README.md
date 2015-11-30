@@ -130,6 +130,8 @@ If the column type is "number", then this property is expected to be a number. T
 
 If the column type is "date", then this property is expected to be a string corresponding to one of the interval types defined in [d3-time](https://github.com/d3/d3-time). This includes, for example, "minute", "hour", "day", "week", "month", and "year".
 
+Variable width intervals are [planned to be supported in the future](https://github.com/chiasm-project/chiasm-dataset/issues/3).
+
 <a name="domain" href="#domain">#</a><i>dataset.metadata.columns[i]</i>.<b>domain</b>
 
 The domain of this column. This corresponds to the notion of domain in D3 scales.
