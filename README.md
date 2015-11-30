@@ -18,27 +18,42 @@ For example, in this [Bar Chart Example](http://bl.ocks.org/mbostock/3885304), t
 
 Introducing a well defined data structure for dealing with data tables makes it possible to cleanly separate data-specific logic from generic data visualization logic. Using chiasm-dataset as an intermediate data table representation, the [chiasm-dsv-dataset module](https://github.com/chiasm-project/chiasm-dsv-dataset) moves the logic that specifies how each column in a CSV file should be parsed out of JavaScript and into a configuration file. This organization of the code also enables services that may render arbitrary data tables that can be configured dynamically at runtime.
 
-In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels.
+In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels. This enables user interfaces that are aware of column type restrictions for certain visualization, such as dropdown menus restricted by column type, or drag & drop interfaces that know where a given column can and cannot be dropped.
 
 [![](http://image.slidesharecdn.com/2015-150716143500-lva1-app6892/95/visualization-a-primer-basics-techniques-and-guidelines-19-638.jpg?cb=1437057727)](http://www.slideshare.net/cagatayturkay/visualization-a-primer)
 Visual Marks and Channels Diagram from [Munzner: Visualization Analysis and Design](https://www.youtube.com/watch?v=jVC6SQS23ak&feature=youtu.be)
 
 # Usage
 
-Note: development has not yet started, following the practice of [README-driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html).
+Since this project is mainly a specification of an in-memory JavaScript data structure, the library it provides is a program that will validate the data structure according to a [set of constraints](https://github.com/chiasm-project/chiasm-dataset/issues/1). Here's some example code that shows how to validate a dataset.
 
 ```javascript
 var ChiasmDataset = require("chiasm-dataset");
-var dataset = new ChiasmDataset(data, metadata);
+
+var dataset = {
+  data: [
+    { name: "Joe",  age: 29, birthday: new Date(1986, 11, 17) },
+    { name: "Jane", age: 31, birthday: new Date(1985, 1, 15)  }
+  ],
+  metadata: {
+    columns: [
+      { name: "name", type: "string" },
+      { name: "age", type: "number" },
+      { name: "birthday", type: "date" }
+    ]
+  }
+};
+
+var promise = ChiasmDataset.validate(dataset);
+
+promise.then(function (){
+  console.log("This dataset successfully passed validation!");
+}, function (err){
+  console.log("This dataset failed validation with the following error: " + err.message);
+});
 ```
 
-At the time of construction, the data structure is validated according to the constraints detailed below. An exception is thrown if the given `data` and `metadata` values violate any constraints.
-
-When writing functions that accept an object that is supposedly a Dataset, you can use `instanceof` to check if it is in fact a Dataset, like this:
-
-```javascript
-if(dataset instanceof Dataset){ ... }
-```
+Note that `ChiasmDataset.validate` returns a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). See the [tests](tests.js) for an enumeration of all possible validation failure errors.
 
 # Data Structure Reference
 
