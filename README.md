@@ -1,4 +1,7 @@
 # chiasm-dataset
+
+[![Build Status](https://travis-ci.org/chiasm-project/chiasm-dataset.svg)](https://travis-ci.org/chiasm-project/chiasm-dataset)
+
 A data structure for representing tabular data.
 
  * [What Problem Does This Solve?](#what-problem-does-this-solve)
