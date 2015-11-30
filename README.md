@@ -132,7 +132,6 @@ I hope I'm not reinventing the wheel here. If you know of any JavaScript data fr
 
 The overall goal of this project is to serve as the core data structure exchanged between Chiasm components for representing tabular data. The following issues comprise the roadmap:
 
- * [Implement validation function.](https://github.com/chiasm-project/chiasm-dataset/issues/1).
- * [Adopt chiasm-dataset in other projects](https://github.com/chiasm-project/chiasm-dataset/issues/2).
- 
-Variable width binning should be supported in the future (e.g. for [Jenks Natural Breaks for Choropleth maps](https://github.com/chiasm-project/chiasm/issues/51)).
+ * [Implement validation function](https://github.com/chiasm-project/chiasm-dataset/issues/1)
+ * [Adopt chiasm-dataset in other projects](https://github.com/chiasm-project/chiasm-dataset/issues/2)
+ * [Support variable width binning](https://github.com/chiasm-project/chiasm-dataset/issues/3)
