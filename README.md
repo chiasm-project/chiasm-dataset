@@ -27,6 +27,7 @@ Introducing a well defined data structure for dealing with data tables makes it 
 In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels. This enables user interfaces that are aware of column type restrictions for certain visualization, such as dropdown menus restricted by column type, or drag & drop interfaces that know where a given column can and cannot be dropped.
 
 [![](http://image.slidesharecdn.com/2015-150716143500-lva1-app6892/95/visualization-a-primer-basics-techniques-and-guidelines-19-638.jpg?cb=1437057727)](http://www.slideshare.net/cagatayturkay/visualization-a-primer)
+
 Visual Marks and Channels Diagram from [Munzner: Visualization Analysis and Design](https://www.youtube.com/watch?v=jVC6SQS23ak&feature=youtu.be)
 
 # Usage
