@@ -11,6 +11,18 @@ This data structure accommodates both relational data tables as well as aggregat
 
 The purpose of this data structure is to serve as a common data table representation for use in the [Chiasm project](https://github.com/chiasm-project/chiasm). By using this data structure, components for data access, data transformation, and interactive visualization can be interoperable.
 
+# What Problem Does This Solve?
+Most of the [D3-based data visualization examples](https://github.com/mbostock/d3/wiki/Gallery) are organized such that the data-specific logic is intertwined with data visualization logic. This is a barrier that makes it more difficult to adapt existing visualization examples to new data, or to create reusable visualization components.
+
+For example, in this [Bar Chart Example](http://bl.ocks.org/mbostock/3885304), the visualization logic is deeply entangled with the mapping from data to visual marks and channels in lines of code like this `` Also, the logic that specifies how each column in a CSV file should be parsed is specified using JavaScript, which must be manually changed with changing the data used for the visualization.
+
+Introducing a well defined data structure for dealing with data tables makes it possible to cleanly separate data-specific logic from generic data visualization logic. Using chiasm-dataset as an intermediate data table representation, the [chiasm-dsv-dataset module](https://github.com/chiasm-project/chiasm-dsv-dataset) moves the logic that specifies how each column in a CSV file should be parsed out of JavaScript and into a configuration file. This organization of the code also enables services that may render arbitrary data tables that can be configured dynamically at runtime.
+
+In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels.
+
+[![](http://image.slidesharecdn.com/2015-150716143500-lva1-app6892/95/visualization-a-primer-basics-techniques-and-guidelines-19-638.jpg?cb=1437057727)](http://www.slideshare.net/cagatayturkay/visualization-a-primer)
+Visual Marks and Channels Diagram from [Munzner: Visualization Analysis and Design](https://www.youtube.com/watch?v=jVC6SQS23ak&feature=youtu.be)
+
 # Usage
 
 Note: development has not yet started, following the practice of [README-driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html).
