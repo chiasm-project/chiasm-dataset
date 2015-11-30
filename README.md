@@ -25,6 +25,17 @@ Most of the [D3-based data visualization examples](https://github.com/mbostock/d
 
 For example, in this [Bar Chart Example](http://bl.ocks.org/mbostock/3885304), the visualization logic is deeply entangled with the mapping from data to visual marks and channels in lines of code like this `` Also, the logic that specifies how each column in a CSV file should be parsed is specified using JavaScript, which must be manually changed with changing the data used for the visualization.
 
+As another example, consider the [Heatmap Example](http://bl.ocks.org/mbostock/3202354). This example has the following lines:
+
+```javascript
+// The size of the buckets in the CSV data file.
+// This could be inferred from the data if it weren't sparse.
+var xStep = 864e5,
+    yStep = 100;
+```
+
+These steps are defined in JavaScript code, but are better suited to be expressed as part of the dataset representation. Chiasm-dataset supports representation of intervals like this using the [interval property](#interval), allowing visualizations to be implemented that operate on any intervals that may be used in the data.
+
 Introducing a well defined data structure for dealing with data tables makes it possible to cleanly separate data-specific logic from generic data visualization logic. Using chiasm-dataset as an intermediate data table representation, the [chiasm-dsv-dataset module](https://github.com/chiasm-project/chiasm-dsv-dataset) moves the logic that specifies how each column in a CSV file should be parsed out of JavaScript and into a configuration file. This organization of the code also enables services that may render arbitrary data tables that can be configured dynamically at runtime.
 
 In addition, it is useful to explicitly represent the types of each column so that they can be checked for compatibility with various "shelves" of visualization components such as `xColumn`, `yColumn`, `colorColumn`, `sizeColumn`, and `shapeColumn`, corresponding to mappings from data columns (also called "variables", "fields", or "attributes") visual marks and channels. This enables user interfaces that are aware of column type restrictions for certain visualization, such as dropdown menus restricted by column type, or drag & drop interfaces that know where a given column can and cannot be dropped.
