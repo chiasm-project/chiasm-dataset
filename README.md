@@ -149,6 +149,11 @@ This library is essentially a data frame for JavaScript, similar in many ways to
  * [R Data Frames](http://www.r-tutor.com/r-introduction/data-frame)
  * [Pandas Data Frames](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html)
 
+The following libraries touch upon some related aspects, such as data transformation:
+
+ * [vega/datalib](https://github.com/vega/datalib) A powerhouse for parsing and transforming data.
+ * [plywood](https://github.com/implydata/plywood) This can parse "split-apply-combine" data transformation expressions and evaluate them in memory or in a database.
+
 I hope I'm not reinventing the wheel here. If you know of any JavaScript data frame library that solves the same problems as this one, please open a GitHub issue.
 
 # Roadmap
