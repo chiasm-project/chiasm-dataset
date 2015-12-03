@@ -1,6 +1,5 @@
 var expect = require("chai").expect,
     ChiasmDataset = require("./index"),
-    strings = ChiasmDataset.strings,
     errorMessage = ChiasmDataset.errorMessage;
 
 function reject(options, done, printErr){
@@ -19,7 +18,7 @@ function reject(options, done, printErr){
     });
 }
 
-describe("chiasm-dataset", function () {
+describe("chiasm-dataset validation", function () {
 
   it("`data` property exists.", function(done) {
     ChiasmDataset.validate({}).then(function (){}, function (err) {
@@ -28,7 +27,7 @@ describe("chiasm-dataset", function () {
       //console.log(err.stack);
 
       expect(err).to.exist;
-      expect(err.message).to.equal(strings.data_missing);
+      expect(err.message).to.equal(errorMessage("data_missing"));
       done();
     });
   });
@@ -461,5 +460,33 @@ describe("chiasm-dataset", function () {
         ]
       }
     }).then(done);
+  });
+});
+
+describe("chiasm-dataset getColumnMetadata", function () {
+  var dataset = {
+    data: [
+      { name: "China", population: 1376048943 },
+      { name: "India", population: 1311050527 }
+    ],
+    metadata: {
+      isCube: true,
+      columns: [
+        { name: "name", type: "string", isDimension: true},
+        { name: "population", type: "number" }
+      ]
+    }
+  };
+
+  it("should get metadata", function() {
+    var columnMetadata = ChiasmDataset.getColumnMetadata(dataset, "population");
+    expect(columnMetadata.name).to.equal("population");
+    expect(columnMetadata.type).to.equal("number");
+  });
+
+  it("should throw exception if column missing", function() {
+    expect(function (){
+      ChiasmDataset.getColumnMetadata(dataset, "foo");
+    }).to.throw(Error, errorMessage("column_metadata_missing", { column: "foo" }));
   });
 });

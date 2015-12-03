@@ -20,6 +20,7 @@ var strings = {
   column_in_data_not_metadata: "The column '%column%' is present in the data, but there is no entry for it in dataset.metadata.columns.",
   column_in_metadata_not_data: "The column '%column%' is present in dataset.metadata.columns, but this column is missing from the row objects in dataset.data.",
   column_type_mismatch: "The column '%column%' is present in the data, but its type does not match that declared in dataset.metadata.columns. The type of the data value '%value%' for column '%column' is '%typeInData%', but is declared to be of type '%typeInMetadata%' in dataset.metadata.columns.",
+  column_metadata_missing: "There is no metadata present for the column '%column%'"
 };
 
 var validTypes = {
@@ -263,8 +264,21 @@ function validate(dataset){
   });
 }
 
+function getColumnMetadata(dataset, columnName){
+
+  var matchingColumns = dataset.metadata.columns.filter(function (column){
+    return column.name === columnName;
+  })
+
+  if(matchingColumns.length === 0){
+    throw error("column_metadata_missing", { column: columnName });
+  } else {
+    return matchingColumns[0];
+  }
+}
+
 module.exports = {
-  strings: strings,
   errorMessage: errorMessage,
-  validate: validate
+  validate: validate,
+  getColumnMetadata: getColumnMetadata
 };
