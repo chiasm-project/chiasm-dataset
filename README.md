@@ -148,6 +148,10 @@ This library is essentially a data frame for JavaScript, similar in many ways to
 
  * [R Data Frames](http://www.r-tutor.com/r-introduction/data-frame)
  * [Pandas Data Frames](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html)
+ * [Data Frames in Julia](https://github.com/JuliaStats/DataFrames.jl)
+ * [Spark Data Frames](http://spark.apache.org/docs/latest/sql-programming-guide.html#dataframes)
+
+It should be possible to develop interoperability links between any of the above data frames formats and chiasm-dataset, which could be the basis for integrating Chiasm visualizations into existing applications that use these frameworks.
 
 The following libraries touch upon some related aspects, such as data transformation and data-to-visualization mapping:
 
